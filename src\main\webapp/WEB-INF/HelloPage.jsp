@@ -14,7 +14,7 @@
 <h2> ${pathofjava} </h2>
 
 
-<form action="asdf.html" method ="get">
+<form action="person_info.html" method ="get">
 
 <input type="submit" value="Start">
   
