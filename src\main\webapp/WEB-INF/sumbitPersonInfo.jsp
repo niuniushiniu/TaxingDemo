@@ -53,7 +53,7 @@ Status: ${isSingle}
 
 
 
-<form action="wait.html" method = "post">
+<form action="IncomeAndTax" method = "post">
 
 <input type="submit" class="btn btn-primary" value="Confirm">
 
