@@ -41,7 +41,7 @@
 	<b>[23b]routing_num:&nbsp&nbsp</b> <input type="text" name = "routing_num" value="2345678">
 	<br><br>
 	
-	<b>[23c] checking</b>&nbsp&nbsp&nbsp<input type="radio" name="checkingOrSaving" value="1">
+	<b>[23c] checking</b>&nbsp&nbsp&nbsp<input type="radio" name="checkingOrSaving" value="1" checked="checked">
 	<b>&nbsp&nbsp&nbsp saving</b>&nbsp&nbsp<input type="radio" name="checkingOrSaving" value="2">
 	<br><br>
 	
@@ -53,7 +53,7 @@
 	<br><br>
 	<b>[25]Amount you owe:&nbsp&nbsp</b> ${owe}
 	<br><br>	
-	<b>[23a]refund:&nbsp&nbsp</b> <input type="hidden" name = "owe" value= ${owe} >
+	<input type="hidden" name = "owe" value= ${owe} >
 	<input type="submit" class="btn btn-primary" value="Review Refund">
   
 </form>

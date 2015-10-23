@@ -31,7 +31,7 @@
 <div id="wrapper" >
 
 <h2>Confirm your refund info</h2>
-<form action="generatePdf" method ="get">
+<form action="page2" method ="get">
 <b>[22] OverPaid:&nbsp&nbsp</b>   ${overpaid}
 <br><br>
 <b>[23a]refund:&nbsp&nbsp</b>	${refund}

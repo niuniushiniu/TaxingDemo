@@ -267,11 +267,44 @@ public class HelloController {
 		return model7;
 	}
 	
+	@RequestMapping(value = "/page2")		
+	public ModelAndView page2(){
+		
+		ModelAndView model9 = new ModelAndView("page2");
+		return model9;
+		
+	}
+		
 	@RequestMapping(value = "/generatePdf")
-	public ModelAndView getPdf() throws IOException {
+	ModelAndView getPdf(@RequestParam Map<String, String> page2) throws IOException {
 		ModelAndView model8 = new ModelAndView("generatePdf");
 		
+		String citizenship	= page2.get("citizenship");
+		System.out.println(citizenship);
+		String residence		= page2.get("residence");
+		String greencard		= page2.get("greencard");
+		String US_citizen	= page2.get("US_citizen");
+		String greencard_holder	= page2.get("greencard_holder");
+		String e			= page2.get("e");
+		String f			= page2.get("f");
+		String f_yes			= page2.get("f_yes");
+		String enterUSA			= page2.get("enterUSA");
+		String departedUSA	= page2.get("departedUSA");
+		String h1		= page2.get("h1");
+		String h2		= page2.get("h2");
+		String h3		= page2.get("h3");
+		String I		= page2.get("I");
+		String I2	= page2.get("I2");
+		String country2	= page2.get("country2");
+		String article_20			= page2.get("article_20");
+		String prior_tax_year_month			= page2.get("prior_tax_year_month");
+		String amount_of_exemption_5000			= page2.get("amount_of_exemption_5000");
+		String treaty_total			= page2.get("treaty_total");
+		String J	= page2.get("J");
+	
+		
 		int i = 0;
+		
 		BufferedReader reader = null;
 		String [] jsonContext = new String[3];
 		
@@ -356,7 +389,7 @@ public class HelloController {
 		String credit_1040C = jsonObject1.get("credit_1040C").toString();
 		String totalPayments = jsonObject1.get("totalPayments").toString();
 		
-		form1.setField("f1_10_0_", wage + "");
+		  form1.setField("f1_10_0_", wage + "");
 	      form1.setField("f1_12_0_", taxable_refunds + "");
 	      form1.setField("f1_14_0_", scholarship + "");   	      
 	      form1.setField("f1_16_0_", treaty + "");
@@ -404,6 +437,39 @@ public class HelloController {
 	      
 	      form1.setField("f1_56_0_", owe + "");
 	      form1.setField("f1_58_0_", tax_penalty + "");
+	 //======page2======================================     
+	      form1.setField("f2_01_0_", citizenship);
+	      form1.setField("f2_02_0_", residence);
+	      form1.setField("c2_01_0_[0]", greencard);
+	      form1.setField("c2_01_0_[1]", greencard);
+	      form1.setField("c2_35_0_[0]", US_citizen);
+	      form1.setField("c2_35_0_[1]", US_citizen);
+	      form1.setField("c2_37_0_[0]", greencard_holder);
+	      form1.setField("c2_37_0_[1]", greencard_holder);
+	      form1.setField("f2_19_0_", e);
+	      form1.setField("c2_36_0_[0]", f);
+	      form1.setField("c2_36_0_[1]", f);
+	      form1.setField("f2_18_0_", f_yes);
+	      
+	      form1.setField("f2_019_0_", enterUSA);
+	      form1.setField("f2_22_0_", departedUSA);
+	      form1.setField("f2_15_0_", h1);
+	      form1.setField("f2_16_0_", h2);
+	      form1.setField("f2_17_0_", h3);
+	      
+	      form1.setField("c2_22_0_[0]", I);
+	      form1.setField("c2_22_0_[1]", I);
+	      form1.setField("f2_129_0_", I2);
+	      
+	      form1.setField("f2_127_0_", country2);
+	      form1.setField("f2_128_0_", article_20);
+	      form1.setField("f2_129_0_", prior_tax_year_month);
+	      form1.setField("f2_130_0_", amount_of_exemption_5000);
+	      form1.setField("f2_143_0_", treaty_total);
+	      form1.setField("c2_34_0_[0]", J);
+	      form1.setField("c2_34_0_[1]", J);
+	      
+	    
 		  
 		stamp1.close();
 		} catch (Exception de) {
