@@ -25,14 +25,14 @@
     response.setContentType("application/pdf");
     
     
-    String path = application.getRealPath(request.getRequestURI());
-	path = path.substring(0, path.length() - 101);
+    /* String path = application.getRealPath(request.getRequestURI());
+	path = path.substring(0, path.length() - 101); */
 	//out.println(path);
 	
     try{
-    	String strpath = new String(path + "TaxingDemo/FormFillPDF.pdf");
     	
-    	//String strpath = new String("/Users/chizhang/Documents/workspaceEE/TaxingDemo/FormFillPDF.pdf");
+    	
+    	String strpath = new String("/Users/chengyangyan/Documents/workspaceEE/TaxingDemo/FormFillPDF.pdf");
     	File file1 = new File(strpath);
     	if (file1.exists()){
     		DataOutputStream temps = new DataOutputStream(response.getOutputStream());

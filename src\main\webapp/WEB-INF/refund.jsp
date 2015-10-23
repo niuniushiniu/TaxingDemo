@@ -35,24 +35,25 @@
 <form action="refundConfirm" method ="get">
 	<b>[22] OverPaid:&nbsp&nbsp</b>    ${overpaid} 
 	<br><br>
-	<b>[23a]refund:&nbsp&nbsp</b> <input type="text" name = "refund" value="2345">
+	<b>[23a]refund:&nbsp&nbsp</b> <input type="hidden" name = "overpaid" value= ${overpaid} >
+	<b>[23a]refund:&nbsp&nbsp</b> <input type="text" name = "refund" value="10000">
 	<br><br>
-	<b>[23b]routing_num:&nbsp&nbsp</b> <input type="text" name = "routing_num" value="2345">
+	<b>[23b]routing_num:&nbsp&nbsp</b> <input type="text" name = "routing_num" value="2345678">
 	<br><br>
 	
 	<b>[23c] checking</b>&nbsp&nbsp&nbsp<input type="radio" name="checkingOrSaving" value="1">
 	<b>&nbsp&nbsp&nbsp saving</b>&nbsp&nbsp<input type="radio" name="checkingOrSaving" value="2">
 	<br><br>
 	
-	<b>[23d]account_num:&nbsp&nbsp</b> <input type="text" name = "account_num" value="2345">
+	<b>[23d]account_num:&nbsp&nbsp</b> <input type="text" name = "account_num" value="123454338">
 	<br><br>
-	<b>[23e]mail_outUS_add:&nbsp&nbsp</b> <input type="text" name = "mail_outUS_add" value="2345">
+	<b>[23e]mail_outUS_add:&nbsp&nbsp</b> <input type="text" name = "mail_outUS_add" value="please enter here">
 	<br><br>
 	<b>[24]tax_2015:&nbsp&nbsp</b> <input type="text" name = "tax_2015" value="2345">
 	<br><br>
 	<b>[25]Amount you owe:&nbsp&nbsp</b> ${owe}
 	<br><br>	
-	
+	<b>[23a]refund:&nbsp&nbsp</b> <input type="hidden" name = "owe" value= ${owe} >
 	<input type="submit" class="btn btn-primary" value="Review Refund">
   
 </form>

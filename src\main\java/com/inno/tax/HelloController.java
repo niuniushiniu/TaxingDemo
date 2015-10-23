@@ -1,12 +1,16 @@
 package com.inno.tax;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import net.sf.json.JSONArray;
@@ -20,6 +24,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.inno.tax.GetTax;
+import com.inno.tax.*;
+import com.itextpdf.text.io.TempFileCache;
+import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 
 
 @Controller
@@ -62,39 +71,9 @@ public class HelloController {
 		bw.write("\"country" +"\": \""+ country +"\", ");
 		bw.write("\"province" +"\": \""+ province +"\", ");
 		bw.write("\"zipcode" +"\": \""+ zipcode +"\", ");
-		bw.write("\"isSingle" +"\": \""+ isSingle +"\"}, ");
+		bw.write("\"isSingle" +"\": \""+ isSingle +"\"}]\n");
 		bw.close();
-//	try {	  
-//		// /Users/chizhang/Documents/workspaceEE/TaxingDemo/test.pdf
-//		// /Users/chizhang/Documents/workspaceEE/TaxingDemo/FormFillPDF.pdf
-//		// /home/ubuntu/test/test.pdf
-//		String path = this.getClass().getResource("").getPath();
-//		path = path.substring(0, path.length() - 103);
-//			
-//		PdfReader reader = new PdfReader(path + "TaxingDemo/test.pdf");
-//		  
-//		  
-//		//PdfReader reader = new PdfReader("/Users/chizhang/Documents/workspaceEE/TaxingDemo/test.pdf");
-//		/** filling in the personal information*/
-//		PdfStamper stamp1 = new PdfStamper(reader, new FileOutputStream(path + "/TaxingDemo/FormFillPDF.pdf"));
-//		//model3.addObject("showstatus", "outputed");
-//		AcroFields form1 = stamp1.getAcroFields();
-//		//Personal info=============================================
-//		form1.setField("f1_01_0_", firstname);
-//		form1.setField("f1_02_0_", lastname);
-//		form1.setField("f1_03_0_", id_num);
-//		form1.setField("f1_04_0_", home_addr);
-//		form1.setField("f1_05_0_", city_state_zip);
-//		form1.setField("TextField1", country);
-//		form1.setField("f1_73_0_", province);
-//		form1.setField("f1_301_0_", zipcode);
-//		form1.setField("c1_2_0_[0]", isSingle);
-//		form1.setField("c1_2_0_[1]", isSingle);
-//		  
-//		stamp1.close();
-//		} catch (Exception de) {
-//			      de.printStackTrace();
-//		}
+
 		
 		model3.addObject("firstname", firstname);
 		model3.addObject("lastname", lastname);
@@ -153,7 +132,7 @@ public class HelloController {
 	
 	BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
 			new FileOutputStream(path + "TaxingDemo/temp.json", true)));
-	bw.write("{");
+	bw.write("[{");
 	bw.write("\"wage" +"\": \""+ wage +"\", ");
 	bw.write("\"taxable_refunds" +"\": \""+ taxable_refunds +"\", ");
 	bw.write("\"scholarship" +"\": \""+ scholarship +"\", ");
@@ -173,7 +152,7 @@ public class HelloController {
 	bw.write("\"federal_withheld_1042S" +"\": \""+ federal_withheld_1042S +"\", ");
 	bw.write("\"return_of_2013" +"\": \""+ return_of_2013 +"\", ");
 	bw.write("\"credit_1040C" +"\": \""+ credit_1040C +"\", ");
-	bw.write("\"totalPayments" +"\": \""+ totalPayments +"\"}] ");
+	bw.write("\"totalPayments" +"\": \""+ totalPayments +"\"}]\n");
 	bw.close();
 	
 	model5.addObject("wage", wage);
@@ -206,13 +185,25 @@ public class HelloController {
 	@RequestMapping(value = "/refund")
 	public ModelAndView refund(@RequestParam Map<String, String> refund) throws IOException{
 		ModelAndView model6 = new ModelAndView("refund");
+		int i = 0;
+		BufferedReader reader = null;
+		String [] jsonContext = new String[2];
 		
 		String path = this.getClass().getResource("").getPath();
 		path = path.substring(0, path.length() - 103);		
+		FileInputStream fileinputStream = new FileInputStream(path + "/TaxingDemo/temp.json");
+		InputStreamReader inputStreamReader = new InputStreamReader(fileinputStream, "UTF-8");
+		reader = new BufferedReader(inputStreamReader);
+		String tempString = null;
 		
-		String JsonContext = new Util().ReadFile(path + "TaxingDemo/temp.json");
-		JSONArray jsonArray = JSONArray.fromObject(JsonContext);
-		JSONObject jsonObject = jsonArray.getJSONObject(1);		
+		while((tempString = reader.readLine())!= null){
+			jsonContext[i] = tempString;
+			i++;
+		}
+		//String JsonContext = new Util().ReadFile(path + "TaxingDemo/temp.json");
+		
+		JSONArray jsonArray = JSONArray.fromObject(jsonContext[1]);
+		JSONObject jsonObject = jsonArray.getJSONObject(0);		
 		
 		String totalPayments = jsonObject.get("totalPayments").toString();
 		String tax = jsonObject.get("num17").toString();
@@ -230,13 +221,14 @@ public class HelloController {
 		model6.addObject("overpaid", overpaid);
 		model6.addObject("owe", owe);
 		model6.addObject("refundorowe", refundorowe);
+		reader.close();
 		return model6;
 	}
 	
 	@RequestMapping(value = "/refundConfirm")
 	public ModelAndView refundConfirm(@RequestParam Map<String, String> refundConfirm) throws IOException {
 		ModelAndView model7 = new ModelAndView("refundConfirm");
-		String overPaid	= refundConfirm.get("overpaid");
+		String overpaid	= refundConfirm.get("overpaid");
 		String refund		= refundConfirm.get("refund");
 		String routing_num		= refundConfirm.get("routing_num");
 		String checkingOrSaving	= refundConfirm.get("checkingOrSaving");
@@ -251,9 +243,9 @@ public class HelloController {
 		
 		
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream(path + "TaxingDemo/refundTemp.json", true)));
+				new FileOutputStream(path + "TaxingDemo/temp.json", true)));
 		bw.write("[{");
-		bw.write("\"overPaid" +"\": \""+ overPaid +"\", ");
+		bw.write("\"overpaid" +"\": \""+ overpaid +"\", ");
 		bw.write("\"refund" +"\": \""+ refund +"\", ");
 		bw.write("\"routing_num" +"\": \""+ routing_num +"\", ");
 		bw.write("\"checkingOrSaving" +"\": \""+ checkingOrSaving +"\", ");
@@ -261,17 +253,169 @@ public class HelloController {
 		bw.write("\"mail_outUS_add" +"\": \""+ mail_outUS_add +"\", ");
 		bw.write("\"tax_2015" +"\": \""+ tax_2015 +"\", ");
 		bw.write("\"zipcode" +"\": \""+ zipcode +"\", ");		
-		bw.write("\"owe" +"\": \""+ owe +"\"}] ");
+		bw.write("\"owe" +"\": \""+ owe +"\"}]");
 		bw.close();
 		
+		model7.addObject("overpaid", overpaid);
+		model7.addObject("refund", refund);
+		model7.addObject("routing_num", routing_num);
+		model7.addObject("checkingOrSaving", checkingOrSaving);
+		model7.addObject("account_num", account_num);
+		model7.addObject("mail_outUS_add", mail_outUS_add);
+		model7.addObject("tax_2015", tax_2015);
+		model7.addObject("mail_outUS_add", mail_outUS_add);
 		return model7;
 	}
 	
-	@RequestMapping(value = "/pdf")
-	public ModelAndView getPdf() {
+	@RequestMapping(value = "/generatePdf")
+	public ModelAndView getPdf() throws IOException {
 		ModelAndView model8 = new ModelAndView("generatePdf");
+		
+		int i = 0;
+		BufferedReader reader = null;
+		String [] jsonContext = new String[3];
+		
+		String path = this.getClass().getResource("").getPath();
+		path = path.substring(0, path.length() - 103);		
+		FileInputStream fileinputStream = new FileInputStream(path + "/TaxingDemo/temp.json");
+		InputStreamReader inputStreamReader = new InputStreamReader(fileinputStream, "UTF-8");
+		reader = new BufferedReader(inputStreamReader);
+		String tempString = null;
+		model8.addObject("path", path + "/TaxingDemo/FormFillPDF.pdf");
+		while((tempString = reader.readLine())!= null){
+			jsonContext[i] = tempString;
+			i++;
+		}
+		//String JsonContext = new Util().ReadFile(path + "TaxingDemo/temp.json");
+		
+		JSONArray jsonArray0 = JSONArray.fromObject(jsonContext[0]);
+		JSONObject jsonObject0 = jsonArray0.getJSONObject(0);
+		
+		JSONArray jsonArray1 = JSONArray.fromObject(jsonContext[1]);
+		JSONObject jsonObject1 = jsonArray1.getJSONObject(0);
+		
+		JSONArray jsonArray2 = JSONArray.fromObject(jsonContext[2]);
+		JSONObject jsonObject2 = jsonArray2.getJSONObject(0);
+		
+		String firstname = jsonObject0.get("firstname").toString();
+		String lastname = jsonObject0.get("lastname").toString();
+		String id_num = jsonObject0.get("id_num").toString();
+		String home_addr = jsonObject0.get("home_addr").toString();
+		String city_state_zip = jsonObject0.get("city_state_zip").toString();
+		String country = jsonObject0.get("country").toString();
+		String province = jsonObject0.get("province").toString();
+		String zipcode = jsonObject0.get("zipcode").toString();
+		
+		String isSingle = jsonObject0.get("isSingle").toString();
+		
+		try {	  
+		// /Users/chizhang/Documents/workspaceEE/TaxingDemo/test.pdf
+		// /Users/chizhang/Documents/workspaceEE/TaxingDemo/FormFillPDF.pdf
+		// /home/ubuntu/test/test.pdf
+		
+			
+		PdfReader readerPdf = new PdfReader(path + "TaxingDemo/test.pdf");
+		  
+		  
+		//PdfReader reader = new PdfReader("/Users/chizhang/Documents/workspaceEE/TaxingDemo/test.pdf");
+		/** filling in the personal information*/
+		PdfStamper stamp1 = new PdfStamper(readerPdf, new FileOutputStream(path + "/TaxingDemo/FormFillPDF.pdf"));
+		//model3.addObject("showstatus", "outputed");
+		AcroFields form1 = stamp1.getAcroFields();
+		//Personal info=============================================
+		form1.setField("f1_01_0_", firstname);
+		form1.setField("f1_02_0_", lastname);
+		form1.setField("f1_03_0_", id_num);
+		form1.setField("f1_04_0_", home_addr);
+		form1.setField("f1_05_0_", city_state_zip);
+		form1.setField("TextField1", country);
+		form1.setField("f1_73_0_", province);
+		form1.setField("f1_301_0_", zipcode);
+		form1.setField("c1_2_0_[0]", isSingle);
+		form1.setField("c1_2_0_[1]", isSingle);
+		
+		
+		String wage = jsonObject1.get("wage").toString();
+		String taxable_refunds = jsonObject1.get("taxable_refunds").toString();
+		String scholarship = jsonObject1.get("scholarship").toString();
+		String treaty = jsonObject1.get("treaty").toString();
+		String treaty_type = jsonObject1.get("treaty_type").toString();
+		String num7 = jsonObject1.get("num7").toString();
+		String num8 = jsonObject1.get("num8").toString();
+		String num9 = jsonObject1.get("num9").toString();
+		String num10 = jsonObject1.get("num10").toString();
+		String itemized_deduction = jsonObject1.get("itemized_deduction").toString();
+		String num12 = jsonObject1.get("num12").toString();
+		String exemption = jsonObject1.get("exemption").toString();
+		String num14 = jsonObject1.get("num14").toString();
+		String tax = jsonObject1.get("tax").toString();
+		String num17 = jsonObject1.get("num17").toString();
+		String federal_withheld_W2 = jsonObject1.get("federal_withheld_W2").toString();
+		String federal_withheld_1042S = jsonObject1.get("federal_withheld_1042S").toString();
+		String return_of_2013 = jsonObject1.get("return_of_2013").toString();
+		String credit_1040C = jsonObject1.get("credit_1040C").toString();
+		String totalPayments = jsonObject1.get("totalPayments").toString();
+		
+		form1.setField("f1_10_0_", wage + "");
+	      form1.setField("f1_12_0_", taxable_refunds + "");
+	      form1.setField("f1_14_0_", scholarship + "");   	      
+	      form1.setField("f1_16_0_", treaty + "");
+	      form1.setField("f1_17_0_", treaty_type);
+	      
+	      form1.setField("f1_18_0_", num7 );
+	      
+	      form1.setField("f1_24_0_", num10 + "");
+	      form1.setField("f1_26_0_", itemized_deduction + "");
+	      
+	      form1.setField("f1_28_0_", num12 + "");
+	      form1.setField("f1_30_0_", exemption + "");
+	         	      
+	      form1.setField("f1_32_0_", num14 + "");
+	          	      
+	      form1.setField("f1_34_0_", tax + "");
+	      form1.setField("f1_38_0_", tax + "");
+	      form1.setField("f1_40_0_", federal_withheld_W2 + "");
+	      form1.setField("f1_100_0_", federal_withheld_1042S + "");
+	      form1.setField("f1_42_0_", return_of_2013 + "");
+	      form1.setField("f1_44_0_", credit_1040C + "");
+	     
+	      form1.setField("f1_46_0_", totalPayments + "");
+	      
+	      
+	      String overpaid = jsonObject2.get("overpaid").toString();
+	      String refund = jsonObject2.get("refund").toString();
+	      String routing_num = jsonObject2.get("routing_num").toString();
+	      String checkingOrSaving = jsonObject2.get("checkingOrSaving").toString();
+	      String account_num = jsonObject2.get("account_num").toString();
+	      String mail_outUS_add = jsonObject2.get("mail_outUS_add").toString();
+	      String tax_2015 = jsonObject2.get("tax_2015").toString();
+	      String owe = jsonObject2.get("owe").toString();
+	      int tax_penalty = 0;
+	      form1.setField("f1_48_0_", overpaid + "");
+	      
+	      form1.setField("f1_50_0_", refund + "");
+	      form1.setField("f1_52_0_", routing_num + "");
+	      form1.setField("c1_4_0_[0]", checkingOrSaving);
+	      form1.setField("c1_4_0_[1]", checkingOrSaving);
+	      form1.setField("f1_53_0_", account_num + "");
+	      form1.setField("f1_74_0_", mail_outUS_add);
+	      form1.setField("f1_52_0_", routing_num + "");
+	      form1.setField("f1_54_0_", tax_2015);
+	      
+	      form1.setField("f1_56_0_", owe + "");
+	      form1.setField("f1_58_0_", tax_penalty + "");
+		  
+		stamp1.close();
+		} catch (Exception de) {
+			      de.printStackTrace();
+		}
+		
+		reader.close();
 		return model8;
 	}
+	
+	
+	
 }
 
 

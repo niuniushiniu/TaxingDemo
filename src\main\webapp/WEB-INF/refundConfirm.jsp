@@ -31,24 +31,27 @@
 <div id="wrapper" >
 
 <h2>Confirm your refund info</h2>
-<b>[22] OverPaid:&nbsp&nbsp</b>    ${overpaid}
+<form action="generatePdf" method ="get">
+<b>[22] OverPaid:&nbsp&nbsp</b>   ${overpaid}
 <br><br>
-<b>[23a]refund:&nbsp&nbsp</b>
+<b>[23a]refund:&nbsp&nbsp</b>	${refund}
 <br><br>
-<b>[23b]routing_num:&nbsp&nbsp</b>
+<b>[23b]routing_num:&nbsp&nbsp</b>	${routing_num}
 
 <br><br>
 	
-<b>[23c] checking</b>
+<b>[23c] checking or saving</b>	${checkingOrSaving}
 <br><br>
-<b>[23d]account_num:&nbsp&nbsp</b>
+<b>[23d]account_num:&nbsp&nbsp</b>	${account_num}
 <br><br>
-<b>[23e]mail_outUS_add:&nbsp&nbsp</b>
+<b>[23e]mail_outUS_add:&nbsp&nbsp</b>	${mail_outUS_add}
 <br><br>
-<b>[24]tax_2015:&nbsp&nbsp</b>
+<b>[24]tax_2015:&nbsp&nbsp</b>	${tax_2015}
 <br><br>
-<b>[25]Amount you owe:&nbsp&nbsp</b>
-
+<b>[25]Amount you owe:&nbsp&nbsp</b>	${owe}
+<br><br>
+<input type="submit" class="btn btn-primary" value="Confirm your refund info">
+</form>
 </div>
 </body>
 </html>
