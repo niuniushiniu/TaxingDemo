@@ -32,7 +32,7 @@
 	
 	<br><br>
 	
-	<form action="submit_person_info.html" method = "post">
+	<form action="confirm_person_info.html" method = "post">
 	
 	---------->&nbsp<b>First Name:&nbsp&nbsp</b> <input type="text" name = "firstname" value="Kobe">
 	<br><br>
@@ -50,11 +50,11 @@
 	<br><br>
 	----><b>Foreign ZipCode:&nbsp&nbsp</b> <input type="text" name = "zipcode" value="430074">
 	<br><br>
-	<b>&nbsp Single Non Resident Alien</b>&nbsp&nbsp&nbsp<input type="radio" name="isSingle" value="1"><br>
-	<b>&nbsp Married Non-resident Alien</b>&nbsp&nbsp<input type="radio" name="isSingle" value="2">
+	<b>&nbsp [1]Single Non Resident Alien</b>&nbsp&nbsp&nbsp<input type="radio" name="isSingle" value="1"><br>
+	<b>&nbsp [2]Married Non-resident Alien</b>&nbsp&nbsp<input type="radio" name="isSingle" value="2">
 	<br><br>
 	
-	<input type="submit" class="btn btn-primary" value="Submit">
+	<input type="submit" class="btn btn-primary" value="Review Person Info">
 	
 	<br>
 	<br>	

@@ -28,34 +28,42 @@
 <title>Insert title here</title>
 </head>
 <body>
+<div id="wrapper" >
 
 
+<!--  <h1> ${msg} </h1>-->
+<h3>Enter your income, we calculate tax for you </h3>
 
-<h1> ${msg} </h1>
-<h2> ${pathofjava} </h2>
 
-
-<form action="sumbitTax" method ="get">
----------->&nbsp<b>wage:&nbsp&nbsp</b> <input type="text" name = "wage" value="50000">
+<form action="calculateTax" method ="get">
+<b>[3]wage:&nbsp&nbsp</b> <input type="text" name = "wage" value="50000">
 	<br><br>
-	---------->&nbsp<b>taxable_refunds:&nbsp&nbsp</b> <input type="text" name = "taxable_refunds" value="15000">
+<b>[4]taxable_refunds:&nbsp&nbsp</b> <input type="text" name = "taxable_refunds" value="15000">
 	<br><br>
-	------->&nbsp<b>scholarship :&nbsp&nbsp</b> <input type="text" name = "scholarship" value="20000">
+<b>[5]scholarship :&nbsp&nbsp</b> <input type="text" name = "scholarship" value="20000">
 	<br><br>
 	
-	----->&nbsp<b>Home Address:&nbsp&nbsp</b> <input type="text" name = "home_addr" value="123 Broad Way, Apt 456">
+<b>[6]treaty:&nbsp&nbsp</b> <input type="text" name = "treaty" value="5000">
 	<br><br>
-	<b>City/State PostCode:&nbsp&nbsp</b> <input type="text" name = "city_state_zip" value="Jersey City,NJ 07307">
+<b>treaty_type:&nbsp&nbsp</b> <input type="text" name = "treaty_type" value="C">
 	<br><br>
-	-----><b>Foreign Country:&nbsp&nbsp</b> <input type="text" name = "country" value="China">
+<b>[11]itemized_deduction:&nbsp&nbsp</b> <input type="text" name = "itemized_deduction" value="4000">
 	<br><br>
-	----><b>Foreign Province:&nbsp&nbsp</b> <input type="text" name = "province" value="Hubei">
+	
+<b>[13]exemption:&nbsp&nbsp</b> <input type="text" name = "exemption" value="3950">
 	<br><br>
-	----><b>Foreign ZipCode:&nbsp&nbsp</b> <input type="text" name = "zipcode" value="430074">
+	
+<b>[18a]federal_withheld_W2:&nbsp&nbsp</b> <input type="text" name = "federal_withheld_W2" value="13000">
 	<br><br>
-<input type="submit" value="Start">
+<b>[18b]federal_withheld_1042S:&nbsp&nbsp</b> <input type="text" name = "federal_withheld_1042S" value="12000">
+	<br><br>
+<b>[19]return_of_2013:&nbsp&nbsp</b> <input type="text" name = "return_of_2013" value="2000">
+	<br><br>
+<b>[20]credit_1040C:&nbsp&nbsp</b> <input type="text" name = "credit_1040C" value="50">
+	<br><br>
+<input type="submit" class="btn btn-primary" value="Calculate">
   
 </form>
-
+</div>
 </body>
 </html>
