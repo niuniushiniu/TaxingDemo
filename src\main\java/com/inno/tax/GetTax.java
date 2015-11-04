@@ -38,7 +38,7 @@ public class GetTax {
 		
 		/** compare taxable_income with the taxing table*/
 		
-		int gross = (int) Math.ceil(texable_income);
+		int gross = (int) Math.ceil(texable_income);	//round the texable_income to upper int
 		System.out.println("taxable income= " + texable_income + " is round to= " +gross);
 		
 		while(!taxfound) {
